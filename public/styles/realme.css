@@ -1,0 +1,357 @@
+body{
+    min-width: 1000px;
+}
+
+.full-screen .content-header{
+    padding: 0 0 25px 0;
+}
+
+#realme .content-header{
+    padding-bottom: 0;
+}
+
+#realme .realme-header{
+    background: url("../images/home_bg.jpg") no-repeat transparent;
+    background-size: 100% 150px;
+    height: 150px;
+    text-align: left;
+}
+
+#realme .realme-header-title{
+    display: inline-block;
+    width: 160px;
+    height: 100px;
+    background: url("../images/realme_title.png") no-repeat transparent;
+    float: left;
+    margin: 22px 0 0 65px;
+}
+
+#realme .realme-header-content{
+    float: left;
+    font-size: 14px;
+    color: #333;
+    margin: 30px 0 0 160px;
+}
+
+#realme .realme-header-content p>span{
+    font-size: 24px;
+    margin: 0 5px;
+}
+
+#realme .realme-header .component-btn{
+    float: left;
+    display: inline-block;
+    margin: 50px 0 0 20px;
+}
+
+#realme .table-wrap{
+    text-align: left;
+}
+
+#realme .table-wrap>h3{
+    font-size: 18px;
+    font-weight: normal;
+    text-align: left;
+    padding-left: 30px;
+}
+
+#realme .content-header.realme-myapp .component-btn{
+    display: inline-block;
+    float: right;
+}
+
+#realme .content-header.realme-myapp .gradient-border{
+    margin-top: 0;
+}
+
+.realme-pop h2{
+    margin-top: 0;
+    font-size: 18px;
+    color: #333;
+    font-weight:normal;
+}
+
+.realme-pop .photo-container{
+    width: 330px;
+    height: 248px;
+    background: url("../images/photo_upload_bg.jpg") repeat-y;
+    position: relative;
+    text-align: center;
+}
+
+.realme-pop .photo-container input[type="file"]{
+    opacity: 0;
+    width: 330px;
+    height: 248px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.realme-pop .photo-container .upload-again{
+    position: absolute;
+    width: 330px;
+    height: 248px;
+   line-height: 150px;
+    box-sizing: border-box;
+    font-size: 12px;
+    color: #FFF;
+    text-align: center;
+    top:0;
+    left: 0;
+    display: none;
+    z-index: 1;
+    background: rgba(0,0,0,0.3);
+
+}
+
+.realme-pop .error-tip{
+    position: absolute;
+    bottom: -40px;
+    background: #fff;
+    z-index:2;
+    display: none;
+}
+
+.realme-pop .error-tip:before{
+    display: inline-block;
+    width: 9px;
+    height: 35px;
+    background: url("../images/error_tip_left.png") no-repeat;
+    content: '';
+    float: left;
+}
+
+.realme-pop .error-tip>u{
+    display: inline-block;
+    position: absolute;
+    width: 11px;
+    height: 6px;
+    left: 10px;
+    top: -5px;
+    background: url("../images/error_tip_top.png") no-repeat;
+}
+
+.realme-pop .error-tip>span{
+    display: inline-block;
+    height: 35px;
+    line-height: 35px;
+    float: left;
+    background: url("../images/error_tip_bg.jpg") no-repeat;
+}
+
+.realme-pop .error-tip:after{
+    display: inline-block;
+    width: 9px;
+    height: 35px;
+    background: url("../images/error_tip_right.png") no-repeat;
+    content: '';
+    float: left;
+}
+
+.realme-pop .app-01-notice>div{
+    display: none;
+}
+
+.realme-pop .app-01-notice{
+    text-align: center;
+}
+
+.realme-pop .app-01-error u,.realme-pop .app-03-error u{
+    width: 68px;
+    height: 68px;
+    background: url("../images/pop-error.jpg");
+    margin: 20px 0;
+    display: inline-block;
+}
+
+.realme-pop .app-01-ok u,.realme-pop .app-03-ok u{
+    width: 68px;
+    height: 68px;
+    background: url("../images/pop-ok.jpg");
+    margin: 20px 0;
+    display: inline-block;
+}
+
+.realme-pop .app-01-notice>div>p,.realme-pop .app-03-notice>div>p{
+    font-size: 18px;
+    color: #333;
+    padding: 0 30px;
+}
+
+.realme-pop .app-01-notice>div>span,.realme-pop .app-03-notice>div>span{
+    font-size: 14px;
+    color: #999;
+}
+
+.realme-pop .app-01-notice>div>span>span,.realme-pop .app-03-notice>div>span>span{
+    color: #ff6a35;
+}
+
+.realme-pop.app-03 .app-03-menu{
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.realme-pop.app-03 .app-03-error{
+    text-align: center;
+}
+
+.realme-pop.app-03 .app-03-menu li{
+    list-style: none;
+    display: inline-block;
+    width: 33.333333%;
+    float: left;
+    height: 65px;
+    line-height: 65px;
+    position: relative;
+    color: #999999;
+    text-align: center;
+    cursor: pointer;
+}
+
+.realme-pop.app-03 .app-03-menu li.current{
+    color: #649af9;
+}
+
+.realme-pop.app-03 .app-03-menu li.current:before{
+    content:'';
+    height: 2px;
+    width: 100%;
+    bottom: -1px;
+    left: 0;
+    position: absolute;
+    background-image:-webkit-linear-gradient(90deg, #b316ea, #03aafc);
+    background-image:linear-gradient(90deg,#b316ea,#03aafc);
+}
+
+.realme-pop.app-03 .app-03-content li{
+    display: none;
+    list-style: none;
+    padding: 20px;
+}
+
+.realme-pop.app-03 .app-03-content li.current{
+    display: block;
+}
+
+.realme-pop.app-03 .app-03-content li .component-input{
+    margin-bottom: 15px;
+}
+
+.realme-pop.app-03 .app-03-notice{
+    display: none;
+}
+
+#image-bg{
+    margin: 0 auto;
+    position: relative;
+}
+
+/*提示*/
+#realme .alert-message{
+    padding: 12px 12px 12px 40px;
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+    margin-top: 15px;
+    background: url("../images/realme_icon/realme-home-icon07.png") no-repeat 15px 10px #FFF;
+}
+
+#realme .alert-message>a{
+    color: #649af9;
+    margin-left: 20px;
+}
+
+
+/*loading 动画*/
+.show-key{
+    text-decoration: none;
+    cursor: pointer;
+    vertical-align: top;
+    color: #649af9;
+    margin-left: 5px;
+}
+
+.api-key{
+    color: #999 !important;
+}
+
+.la-ball-clip-rotate.la-2x {
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    top: 64px;
+    left: 106px;
+    display: none;
+}
+.la-ball-clip-rotate {
+    display: block;
+    font-size: 0;
+    color: #69a6ef;
+}
+.la-ball-clip-rotate, .la-ball-clip-rotate > div {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.la-ball-clip-rotate.la-2x > div {
+    width: 120px;
+    height: 120px;
+    border-width: 4px;
+}
+.la-ball-clip-rotate > div {
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border-width: 2px;
+    border-bottom-color: #69a6ef;
+    border-radius: 100%;
+    -webkit-animation: ball-clip-rotate 0.75s linear infinite;
+    -moz-animation: ball-clip-rotate 0.75s linear infinite;
+    -o-animation: ball-clip-rotate 0.75s linear infinite;
+    animation: ball-clip-rotate 0.75s linear infinite;
+    animation-play-state: running;
+}
+.la-ball-clip-rotate > div {
+    display: inline-block;
+    float: none;
+    background-color: transparent;
+    border: 0 solid transparent;
+    border-top-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-bottom-color: currentcolor;
+}
+.la-ball-clip-rotate, .la-ball-clip-rotate > div {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+@keyframes ball-clip-rotate {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg)
+    }
+    50% {
+        -webkit-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        transform: rotate(180deg)
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+

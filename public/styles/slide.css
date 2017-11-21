@@ -1,0 +1,59 @@
+*{margin:0;padding:0;}
+a{text-decoration:none;}
+html,body{font-family: "微软雅黑";height:100%;width:100%;}
+html,body{height:100%;}
+.page{background: #fff;overflow-y: scroll;}
+.page .header{background: #141414;}
+.main{font-size: 14px;padding-top: 30px;text-align: center;}
+.page-wrap{position:relative;min-height: 100%;margin-bottom:-61px;}
+.push{height:61px;}
+/*清除浮动代码*/
+.clearfloat:after{display:block;clear:both;content:"";visibility:hidden;height:0}
+.clearfloat{zoom:1}
+.page{background: #fff;height:100%;width: 100%;}
+.page .section{height:100%;width: 100%;}
+.inner{width: 70%;margin:0 auto;}
+/*头部区域*/
+.header{font-size: 14px;line-height: 60px;}
+.header a{color: #fff;}
+.header-left{width: 60%;float: left;}
+
+.header-right{width: auto;float: right;text-align: left;}
+ul li{list-style:none;padding:0 20px;display: table-cell;}
+ol li{list-style: none;}
+.header .title-list{position: relative;}
+.header .title-list .more-list{text-align: left;width: 115px;z-index: 1000;opacity: 0;display:block;transition: all 0.5s ease;height: 0;}
+.header .title-list .more-list a{display: block;color: #fff;line-height: 20px;font-size: 14px;}
+
+.header-left .logo{float: left;margin-right: 64px;}
+.header-left .logo span{margin: 0 10px;}
+.header-left .logo img{float: left;}
+.header-left .logo .title{float: left;}
+/*main 区域*/
+
+.validate-form .sendEmail .btn:focus{
+    outline: none;
+}
+.validate-form .sendEmail .btn a{
+    color: #fff;
+}
+.validate-form .getCode-btn:hover{
+    background:#e6e6e6;
+}
+.validate-form .sendEmail{
+    text-align: center;
+}
+.validate-form .sendEmail .btn a:hover{
+    width:125px;
+    color: #a9afef;
+}
+
+
+/*底部，每个标签的鼠标移入效果*/
+.footer{width: 100%;background: #333333;}
+.footer .footer-part{float: left;;margin-right: 40px;margin-bottom: 50px;}
+.footer .footer-part h1{font-size: 14px;color: #fff;line-height: 30px;margin: 50px 0 0 0;}
+.footer .footer-part a{color: #a3a3a3;font-size: 12px;display: inline-block;line-height: 30px;}
+.footer .footer-part a img{margin-right: 17px;display: inline-block;line-height: 30px;vertical-align:middle;}
+.footer .right-part{float: right;}
+.footer .footer-title{color: #a3a3a3;line-height: 60px;text-align: center;font-size: 12px;border-top: 1px solid #424242;}
