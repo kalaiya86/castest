@@ -15,9 +15,18 @@ class ProductController extends Controller
     public function index(Request $request,ProductModel $productM)
     {
         //
+        $param = [];
+        $tmp = $request->all();
+
         $data = $productM::getProducts(['id','bncode','cfnum','cas','product_ename','product_cname']);
-        //var_dump($data);
-        return ['data'=>$data];
+        if(isset($tmp['startDate']) && !empty($tmp['startDate'])) $param[] = ['test_time', '>', $tmp['startDate']];
+        if(isset($tmp['endDate']) && !empty($tmp['endDate']))   $param[] =  ['test_time', '<=', $tmp['endDate']];
+        
+        if(isset($tmp['bncode']) && !empty($tmp['bncode'])) $param[] =  ['bncode', 'like', '%'.$tmp['bncode'].'%'];
+         
+        $products = $productM::getProducts(['id','bncode','cas','product_ename','product_cname'],$param);
+        
+        return view('product.index',compact('products'));
     }
 
     /**
@@ -28,6 +37,7 @@ class ProductController extends Controller
     public function create()
     {
         //
+        return view('product.create');
     }
 
     /**
@@ -36,9 +46,15 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,ProductModel $productM)
     {
         //
+        $input = $request->all();
+        
+        if($productM::create($input))
+            return $this->returnData(['respCode'=>'000']);
+        else
+            return $this->returnData(['respCode'=>'457']);
     }
 
     /**
@@ -47,9 +63,11 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ProductModel $productM,$id)
     {
         //
+        $info = $productM->find($id);
+        return view('product.view',compact('info'));
     }
 
     /**
@@ -58,9 +76,11 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ProductModel $productM,$id)
     {
         //
+        $info = $productM->find($id);
+        return view('product.create',compact('info'));
     }
 
     /**
@@ -70,9 +90,16 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ProductModel $productM, $id)
     {
         //
+        $input = $request->all();
+        $model = $productM->find($id);
+        $model->fill($input);
+        if($model->save())
+            return $this->returnData(['respCode'=>'000']);
+        else
+            return $this->returnData(['respCode'=>'457']);
     }
 
     /**
@@ -81,8 +108,12 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ProductModel $productM, $id)
     {
         //
+        if($productM->destroy($id))
+            return $this->returnData(['respCode'=>'000']);
+        else
+            return $this->returnData(['respCode'=>'457']);
     }
 }

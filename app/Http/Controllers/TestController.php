@@ -78,8 +78,7 @@ class TestController extends Controller
     public function show(TestModel $testM,$id)
     {
         //
-        $data = $testM::getTests(['id','bncode','product_id','appearance','purity','condition','spectrogram','test_time'],['id'=>$id]);
-        if($data) $info = $data[0];
+        $info = $testM->find($id);
         return $info;
     }
 
