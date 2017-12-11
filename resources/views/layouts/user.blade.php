@@ -25,14 +25,14 @@
     <script src="{{ asset('js/vendor/ajaxsubmit.js', config('app.secure')) }}"></script>
     <script src="{{ asset('js/vendor/compress.js', config('app.secure')) }}"></script>
     <script src="{{ asset('js/index.js', config('app.secure')) }}"></script>
-    <script src="{{ asset('js/realme.js', config('app.secure')) }}"></script>
+    <!-- <script src="{{ asset('js/realme.js', config('app.secure')) }}"></script> -->
 </head>
 <body>
 <div class="wrap">
 <?php $users = session('user');?>
     @section('sidebar')
         <div class="top-bar">
-            <a href="{{url('realme/demo/index', [], config('app.secure'))}}"><div class="logo">测试平台</div></a>
+            <a href="{{url('/', [], config('app.secure'))}}"><div class="logo">测试平台</div></a>
             <div class="user-info">
                 <img src="{{ asset('images/user_icon.jpg', config('app.secure')) }}" alt="">
                 <ul>
@@ -55,11 +55,13 @@
             <li>
                 <dl>
                     <dd><div class="gradient-border {{ $path == '/' ? 'current' : '' }}"><a href="{{ asset('/', config('app.secure')) }}">控台总览</a></div></dd>
+                    <dd><div class="gradient-border {{ $path == 'tests/create' ? 'current' : '' }}"><a href="{{ asset('tests/create', config('app.secure')) }}">添加测试</a></div></dd>
                 </dl>
             </li>
             <li>
                 <dl>
-                    <dd><div class="gradient-border {{ $path == 'tests/create' ? 'current' : '' }}"><a href="{{ asset('tests/create', config('app.secure')) }}">添加测试</a></div></dd>
+                    <dd><div class="gradient-border {{ $path == 'product' ? 'current' : '' }}"><a href="{{ asset('product', config('app.secure')) }}">产品中心</a></div></dd>
+                    <dd><div class="gradient-border {{ $path == 'products/create' ? 'current' : '' }}"><a href="{{ asset('products/create', config('app.secure')) }}">添加产品</a></div></dd>
                 </dl>
             </li>
             

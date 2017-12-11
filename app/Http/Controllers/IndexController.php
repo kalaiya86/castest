@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\SmsContract;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Models\User;
-use App\Http\Controllers\MailController;
+use App\TestModel;
+use App\ProductModel;
 
 class IndexController extends Controller
 {
@@ -27,15 +25,21 @@ class IndexController extends Controller
      * @param  Request $request 请求参数
      * @return view
      */
-    public function index(Request $request)
+    public function index(Request $request ,TestModel $testM, ProductModel $productM)
     {
+        $total = [];
         $data = [];
         $user = $request->session()->get('user');
         if (!empty($user)) {
             return redirect($to = $this->indexPage, $status = 302, $headers = [], $secure = config('app.secure'));
         }
+
+        $bncodes = $productM::getProductsbyGroup(['bncode'],[],'bncode');
+        $total['bncodes'] = $bncodes->count();
+        $total['tests']  = $testM::count('id');
+
         //echo phpinfo();exit;
-        return view('index.index',compact('data'));
+        return view('index.index',compact('data','total'));
     }
 
     
@@ -51,9 +55,9 @@ class IndexController extends Controller
             $file->storeAs(date('Y'),$filename);
         }
         if ($request->hasFile('fileData')) {
-            $return = ['respCode'=>'000','file_token' =>date('Y').'/'.$filename];
+            $return = ['respCode'=>'000','file_token' =>'storage/'.date('Y').'/'.$filename];
         }else{
-            $return = ['respCode'=>'600','file_token' =>$filename];
+            $return = ['respCode'=>'600','file_token' =>'storage/'.date('Y').'/'.$filename];
         }
         return $this->returnData($return);
     }

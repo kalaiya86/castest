@@ -16,14 +16,16 @@ class TestModel extends Model
      * @var array
      */
     protected $fillable = [
-        'bncode','appearance','product_id','purity','condition','spectrogram','test_time'
+        'bncode','nmr','hplc','water','weather','appearance','product_id','purity','condition','spectrogram','test_time'
     ];
     
     public $timestamps = true;
 
-    static function getTests($feilds=['id'],$where=[]){
+    static function getTests($feilds=['id'], $where=[], $page = 1, $perPage = 15){
         return  self::where($where)
-                ->orderBy('updated_at', 'desc')
-                ->get($feilds);
+                ->orderBy('tests.updated_at', 'desc')
+                ->leftJoin('products', 'tests.bncode', '=', 'products.bncode')
+                ->get($feilds)
+                ->forPage($page,$perPage);
     }
 }

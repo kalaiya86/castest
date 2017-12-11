@@ -21,9 +21,19 @@ class ProductModel extends Model
     public $timestamps = true;
     
 
-    static function getProducts($feilds=['id'],$where=[]){
+    static function getProducts($feilds=['id'],$where=[], $page = 1, $perPage = 15){
         return  self::where($where)
                 ->orderBy('updated_at', 'desc')
+                //->unionAll('')
+                ->get($feilds)
+                ->forPage($page,$perPage);
+    }
+
+
+    static function getProductsbyGroup($feilds=['id'],$where=[],$groupby='bncode'){
+        return  self::where($where)
+                ->orderBy($groupby, 'asc')
+                ->groupBy($groupby)
                 ->get($feilds);
     }
 }

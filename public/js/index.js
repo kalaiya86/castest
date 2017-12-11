@@ -5,36 +5,43 @@ $(function () {
     if(hasCurrentMenu>=0) {
         $('.menu li').eq(hasCurrentMenu).addClass('hasSub');
     }
-    $('.menu>li').on('mouseenter',function () {
+    $('.menu>li').on('click',function () {
         var index = $('.menu>li').index($(this));
         var currentMenu = $('.menu>li').eq(index);
         var currentSubMenu = $('.sub-menu>li').eq(index);
 
+        if($('.sub-menu').hasClass('open')&&$(this).hasClass('current')){
+            $('.sub-menu').removeClass('open');
+        }else{
+            $('.sub-menu').addClass('open');
+        }
+
         currentMenu.addClass('current').siblings().removeClass('current');
         currentSubMenu.addClass('current').siblings().removeClass('current');
-        $('.sub-menu').addClass('open');
+
+
     })
 
-    $('.sub-menu').on('mouseenter',function (e) {
+    /*$('.sub-menu').on('mouseenter',function (e) {
         if ($(e.target).hasClass("sub-menu")&& $(e.target).closest(".menu").length <= 0) {
             $('.sub-menu').removeClass('open');
         }
-    })
+    })*/
 
-    $('.sub-menu').on('mouseleave',function (e) {
+    /*$('.sub-menu').on('mouseleave',function (e) {
         if ($(e.target).hasClass("sub-menu")&& $(e.target).closest(".menu").length <= 0) {
             $('.sub-menu').removeClass('open');
         }
-    })
+    })*/
 
-    $('.sub-menu dd').on('mouseenter',function () {
+    /*$('.sub-menu dd').on('mouseenter',function () {
         $('.sub-menu dd .gradient-border.current').removeClass('current');
-    })
+    })*/
 
-    $('.sub-menu dl').on('mouseleave',function () {
+    /*$('.sub-menu dl').on('mouseleave',function () {
         hasCurrentSubMenu.addClass('current');
         $('.menu li').removeClass('current')
-    })
+    })*/
     
     $(window).click(function (e) {
         if ($(e.target).closest(".sub-menu").length <= 0 && $(e.target).closest(".menu").length <= 0) {
@@ -46,7 +53,7 @@ $(function () {
         }
     })
 
-    $(window).on('mousemove',function (e) {
+    $(window).on('click',function (e) {
         if ($(e.target).closest(".sub-menu").length <= 0 && $(e.target).closest(".menu").length <= 0) {
             $('.sub-menu').removeClass('open');
         }
@@ -282,7 +289,7 @@ function initPager(count,size,$pageContainer,$form,$tableContainer) {
                         if(d.data.length==0){
                             $tableContainer.html('<div class="data-loading">查询无数据</div>');
                         }else{
-                            $tableContainer.html(generateTable(d.header,d.data,d.class));
+                            $tableContainer.html(generateTable(d.thead,d.data,d.class));
                             $('.table-wrap').niceScroll({
                                 cursorborder: "0",
                                 cursorcolor: "#c0d6f3",
@@ -307,7 +314,7 @@ function initPager(count,size,$pageContainer,$form,$tableContainer) {
 }
 
 //弹出框分页初始化
-function initPagerPop(count,size,$contentWrap,$pageContainer) {
+function initPagerPop(count,size,$contentWrap,$pageContainer,$form) {
 
     $pageContainer.show();
     //初始化分页
@@ -332,23 +339,24 @@ function initPagerPop(count,size,$contentWrap,$pageContainer) {
             if(G_DATAAJAX!=undefined) G_DATAAJAX.abort();
             G_DATAAJAX = $.ajax({
                 url: $pageContainer.attr('request-url'),
-                dataType: 'html',
-                data: $.param({'currentPage':pageInfo.pageIndex+1})/* + '&'+$form.serialize()*/,
+                dataType: 'json',
+                data: $.param({'currentPage':pageInfo.pageIndex+1}) + '&'+ $form.serialize(),
                 type: 'post',
-                success: function (data) {
-                    var html = $(data).find('.pop-content-wrap');
+                success: function (d) {
+                    var html = d.respDesc;
                     if(d.respCode=='000'){
                         if(d.data.length==0){
-                            $contentWrap.html('<div class="data-loading">查询无数据</div>');
+                            $contentWrap.html('<div class="data-loading no-data"></div>');
                         }else{
-
+                            html = generateTable(d.thead,d.data);
+                            $contentWrap.html(html)
                         }
                     }else{
                         $contentWrap.html(html)
                     }
                 },
                 error: function () {
-                    console.error('网络出错:分页请求出错');
+                    console.error('网络出错:查询失败');
                 }
             })
         }).on('jumpClicked', function (event, pageInfo) {
@@ -361,39 +369,75 @@ function initPagerPop(count,size,$contentWrap,$pageContainer) {
 }
 
 //生成表格
-function generateTable(thead,tbody,className) {
+function generateTable(theadtmp,tbody,className) {
     var html = '';
+    var className = className||'no-class';
+    var keyName='';
+    var thead = [];
+    var tbodyDefault = [];
 
     html += '<table class="matrix component-table"><thead><tr>';
-    for(var i in thead){
+    for(var i in theadtmp){
+        str = theadtmp[i].split(":"); //console.log(str);
+        thead[i] = str[0]; 
+        if(str[1]) tbodyDefault[i] = str[1];
         html += ('<th>'+thead[i]+'</th>');
     }
     html += '</th></thead><tbody>';
     for(var j in tbody){
         html += '<tr>';
-        for(var k in tbody[j]){
-
+        for(var k in thead){
             //表格字段格式化
             var text = '';
-            if(className[k]=='money'){
-                text = tbody[j][k].formatNum(2);
-                text = formatCurrency(text);
-            }else if(className[k]=='yyyy-mm-dd'){
-                text = moment(tbody[j][k]).format("YYYY-MM-DD");
-            }else if(className[k].indexOf('text_max_length_')>=0){
-
-                var dots = (tbody[j][k].length<=className[k].split('text_max_length_')[1])?'':'...'
-                var tip = (tbody[j][k].length<=className[k].split('text_max_length_')[1])?'':'<span>'+tbody[j][k]+'</span>'
-                text = tbody[j][k].substring(0,className[k].split('text_max_length_')[1])+dots+tip;
-
-            }else{
+            
+            if(className!="no-class" && tbody[j].hasOwnProperty(k)){
+                var num_color = className[k];
+                if(className[k]=='money'){
+                    text = tbody[j][k].formatNum(2);
+                    text = formatCurrency(text);
+                }else if(className[k]=='yyyy-mm-dd'){
+                    text = moment(tbody[j][k]).format("YYYY-MM-DD");
+                }else if(className[k]=='img'){
+                    pic = tbody[j][k].split("."); //console.log(str);
+                    if(pic[1]=='pdf'){
+                        text = '<img src="images/realme_icon/pdf-icon.png" pdfpath="'+tbody[j][k]+'"/>';
+                    }else
+                        text = '<img src="'+ tbody[j][k] +'" />';
+                }else if(className[k]=='money_color'){
+                    if(parseInt(tbody[j][k])>=0){
+                       num_color = 'red_color';
+                        text = '+' + tbody[j][k];
+                    }else{
+                        text = '-' + tbody[j][k];
+                       num_color = 'green_color';
+                    }
+                }else if(className[k].indexOf('text_max_length_')>=0){
+                    var dots = (tbody[j][k].length<=className[k].split('text_max_length_')[1])?'':'...'
+                    var tip = (tbody[j][k].length<=className[k].split('text_max_length_')[1])?'':'<span>'+tbody[j][k]+'</span>'
+                    text = tbody[j][k].substring(0,className[k].split('text_max_length_')[1])+dots+tip;
+                }else{
+                    text = tbody[j][k]
+                }
+                html += ('<td class="'+num_color+'">'+text+'</td>');
+            }else if(tbody[j].hasOwnProperty(k)){
                 text = tbody[j][k]
+                html += ('<td>'+text+'</td>');
+            }else if(tbody[j].hasOwnProperty(k) == false && tbodyDefault[k] != undefined){
+                html += ('<td>'+tbodyDefault[k]+'</td>');
+            }else if(className[k]=='op'){
+                text = '<a href="'+base_url+'s/'+tbody[j]['id']+'/edit">编辑</a> '+
+                       '<a class="dels" href="javascript:;" act="'+base_url+'s/'+tbody[j]['id']+'">删除</a>';
+                html += ('<td>'+text+'</td>');
+            }else{
+                html += ('<td> - </td>');
             }
 
-            html += ('<td class="'+className[k]+'">'+text+'</td>');
         }
+    
         html += '</tr>';
     }
+
+    
     html += '</tbody></table>';
     return html;
 }
@@ -419,6 +463,18 @@ function pop(content,skin) {
     if($('.ui-popup-backdrop').length<=0){
         d.showModal();
     }
+}
+
+function formatMoney(num){
+    if(parseInt(num)>=0){
+       // className[k] = 'red_color';
+        text = '+' + num;
+    }else{
+        text = '-' + num;
+       // className[k] = 'green_color';
+    }
+    return text;
+
 }
 
 //价格千分位分割

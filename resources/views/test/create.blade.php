@@ -124,7 +124,7 @@ if($path=='tests/create'){
                             <!--交互遮罩-->
                         </div>
                         
-                        <p>请提供色谱图，格式要求jpg、png、不超过5MB</p>
+                        <p>请提供色谱图，格式要求jpg、png、pdf不超过5MB</p>
                     </div>
                     <div class="error-tip"><u></u><span>错误</span></div>
                 </div>
@@ -141,6 +141,9 @@ if($path=='tests/create'){
         </div>
     </div>
 </form>
+<script>
+    var list_url = "{{ asset('/', config('app.secure')) }}";
+</script>
 <script src="{{ asset('js/company-certify.js', config('app.secure')) }}"></script>
 
 @endsection

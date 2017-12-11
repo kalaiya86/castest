@@ -2010,7 +2010,7 @@ _:-ms-lang(x),.matrix.component-select .gradient-border{
 .ui-dialog-close{
     position: absolute !important;
     left:50% !important;;
-    top: -50px !important;;
+    top: -20px !important;;
     width: 36px !important;;
     height: 36px !important;;
     background: url("../images/pop-close.png") center no-repeat transparent !important;;
@@ -2269,6 +2269,11 @@ _:-ms-lang(x),.matrix.component-select .gradient-border{
     background: #f9f9f9;
 }
 
+.component-table .img img{
+    width: 30px; 
+    height: 30px;
+
+}
 
 
 

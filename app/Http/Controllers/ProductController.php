@@ -7,6 +7,20 @@ use App\ProductModel;
 
 class ProductController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function default(ProductModel $productM){
+        $bncodes = $productM::getProductsbyGroup(['bncode'],[],'bncode');
+        $cases = $productM::getProductsbyGroup(['cas'],[],'cas');
+        $names = $productM::getProductsbyGroup(['product_cname'],[],'product_cname');
+        
+        return view('product.index',compact('bncodes','cases','names'));
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,16 +31,38 @@ class ProductController extends Controller
         //
         $param = [];
         $tmp = $request->all();
-
-        $data = $productM::getProducts(['id','bncode','cfnum','cas','product_ename','product_cname']);
-        if(isset($tmp['startDate']) && !empty($tmp['startDate'])) $param[] = ['test_time', '>', $tmp['startDate']];
-        if(isset($tmp['endDate']) && !empty($tmp['endDate']))   $param[] =  ['test_time', '<=', $tmp['endDate']];
         
         if(isset($tmp['bncode']) && !empty($tmp['bncode'])) $param[] =  ['bncode', 'like', '%'.$tmp['bncode'].'%'];
+        if(isset($tmp['cas']) && !empty($tmp['cas'])) $param[] =  ['cas', 'like', '%'.$tmp['cas'].'%'];
+        if(isset($tmp['product_cname']) && !empty($tmp['product_cname'])) $param[] =  ['product_cname', 'like', '%'.$tmp['product_cname'].'%'];
          
-        $products = $productM::getProducts(['id','bncode','cas','product_ename','product_cname'],$param);
+        $dataObj = $productM::getProducts(['id','cfnum','bncode','cas','product_ename','product_cname'],$param);
+        $total = $dataObj->count();
+        $result = [
+            'respCode' =>'000',
+            'total'=> $total,
+            'data'=>($total>0)?$dataObj->toArray():[],
+            'param' => $param,
+            "thead"=>[
+                "cfnum"=>"CF编号",
+                "bncode"=>"批号",
+                "cas"=>"C.A.S",
+                "product_cname"=>"中文名称",
+                "product_ename"=>"英文名称",
+                "op"=>"操作",
+              ],
+            "class"=>[
+                "cfnum"=>"",
+                "bncode"=>"",
+                "cas"=>"",
+                "product_cname"=>"",
+                "product_ename"=>"",
+                "op"=>"op",
+            ]
+        ];
+        return $this->returnData($result);
         
-        return view('product.index',compact('products'));
+        
     }
 
     /**

@@ -98,7 +98,7 @@ $(function () {
             dataType:'json',
             success:function (re) {
                 console.log(re);
-                if(!isAuto) window.location.href ='/';//window.location.reload();
+                if(!isAuto) window.location.href = list_url;//window.location.reload();
                 if(isAuto){
                     d = dialog({
                         title:'标题',

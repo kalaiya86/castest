@@ -18,6 +18,8 @@
 Route::any('/', 'IndexController@index');
 Route::any('index/fileUpload', 'IndexController@fileUpload');
 
+Route::any('product', 'ProductController@default');
 Route::resource('products', 'ProductController');
 
+Route::any('test', 'TestController@default');
 Route::resource('tests', 'TestController');

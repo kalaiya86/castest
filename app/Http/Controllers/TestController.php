@@ -13,31 +13,69 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function default(ProductModel $productM){
+        $bncodes = $productM::getProductsbyGroup(['bncode'],[],'bncode');
+        $cases = $productM::getProductsbyGroup(['cas'],[],'cas');
+        $names = $productM::getProductsbyGroup(['product_cname'],[],'product_cname');
+        
+        return view('test.index',compact('bncodes','cases','names'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request,TestModel $testM,ProductModel $productM)
     {
         //
-        $tmp = $request->all(); 
-        if(!empty($tmp['cas']) || !empty($tmp['product_name'])) {
-            $param_product = [];
-            if(!empty($tmp['cas'])) $param_product[] = ['cas', '=', $tmp['cas']];
-              ;
-            if(!empty($tmp['product_cname'])) $param_product[] = ['product_cname', '=', $tmp['cas']];
-              ;
-            $product_tmp = $productM::getProducts(['id','bncode','cas','product_ename','product_cname'],$param_product);
-            if(!empty($product_tmp)) $tmps = array_column($product_tmp, column_key);
-        }
-        
+        $tmp = $request->all();
         $param = [
-            ['test_time', '>', $tmp['startDate']],
-            ['test_time', '<=', $tmp['endDate']],
+            ['test_time', '>', $tmp['startDate'].' 00:00:00'],
+            ['test_time', '<=', $tmp['endDate'].' 00:00:00'],
         ];
-        if(!empty($tmp['bncode'])) $param[] =  ['bncode', 'like', '%'.$tmp['bncode'].'%'];
-         //[$tmp['startDate'],$tmp['endDate']];
-        $data = $testM::getTests(['id','bncode','product_id','appearance','purity','condition','spectrogram','test_time'],$param);
-        $products = $productM::getProducts(['id','bncode','cas','product_ename','product_cname']);
-        //$imgurl = Storage::url();
+
         
-        return ['data'=>$data,'products'=>$products];
+
+        if(!empty($tmp['cfnum'])) $param[] = ['cfnum', '=', $tmp['cfnum']];
+              ;
+        if(!empty($tmp['cas'])) $param[] = ['cas', '=', $tmp['cas']];
+              ;
+        if(!empty($tmp['product_cname'])) $param[] = ['product_cname', 'like', '%'.$tmp['product_cname'].'%'];
+              ;     
+        
+        if(!empty($tmp['bncode'])) $param[] =  ['tests.bncode', 'like', '%'.$tmp['bncode'].'%'];
+        
+        $dataObj = $testM::getTests(['tests.id as id','tests.bncode as bncode','cas','cfnum','nmr','hplc','water','weather','appearance','purity','condition','spectrogram','test_time'],$param);
+        //var_dump($dataObj->toArray());
+        $total = $dataObj->count();
+        $result = [
+            'respCode' =>'000',
+            'total'=> $total,
+            'data'=>($total>0)?$dataObj->toArray():[],
+            'param' => $param,
+            "thead"=>[
+                "test_time"=>"测试时间",
+                "bncode"=>"批次",
+                "cfnum"=>"CF编号",
+                "cas"=>"C.A.S",
+                "product_cname"=>"中文名称",
+                // "product_ename"=>"英文名称",
+                "spectrogram"=>"谱图",
+                "op"=>"操作",
+              ],
+            "class"=>[
+                "test_time"=>"",
+                "bncode"=>"",
+                "cfnum"=>"",
+                "cas"=>"",
+                "product_cname"=>"",
+                // "product_ename"=>"",
+                "spectrogram"=>"img",
+                "op"=>"op",
+            ]
+        ];
+        return $this->returnData($result);
     }
 
     /**
@@ -45,7 +83,7 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(TestModel $testM,ProductModel $productM)
+    public function create(ProductModel $productM)
     {
         //
         $products = $productM::getProducts(['id','bncode','cas','product_ename','product_cname']);
